@@ -1,36 +1,17 @@
 import pymongo
 import conectarBanco
-import atualizarLivros
-import atualizarUsuario
-import atualizarUsuarioAdm
-import cadastrarLivro
-import consultarLivro
-import consultarLivrosTodos
-import cadastrarUsuario
-import verSeguidoresUsuario
-import verLivroU
-import visualizarUsuario
-import logarUsuario
-import verTodosUsuarios
-import procurarLivro
-import verTodosLivros
-import registrarInteracao
-import procurarLivro
-import atualizarInteracaoUsuario
-import verMelhoresLivros
-import SeguirUsuarioEVerSeguidores
+import funcaoADM
+import funcaoUsuarios
+import funcaoLivros
+import funcaoInteracaos
+import deletar
 
-ADMIN_EMAIL = "admlivrariven@gmail.com"
+"""--------------------------------------------------------------"""
+
+ADMIN_EMAIL = "admiven@gmail.com"
 ADMIN_PASSWORD = "iven123"
 
-# Conectar ao banco de dados
-def conectar_banco():
-    return pymongo.MongoClient("mongodb+srv://PMART:Ivens3560@pmart.xnmtt.mongodb.net/")
-
-
-
-
-
+"""--------------------------------------------------------------"""
 
 def menu_login():
     while True:
@@ -42,7 +23,7 @@ def menu_login():
         opcao = input("Escolha uma opção: ")
 
         if opcao == '1':
-            cadastrarUsuario.cadastrar_usuario()
+            funcaoUsuarios.cadastrar_usuario()
         elif opcao == '2':
             email = input("Digite seu email: ")
             senha = input("Digite sua senha: ")
@@ -50,7 +31,7 @@ def menu_login():
             if email == ADMIN_EMAIL and senha == ADMIN_PASSWORD:
                 menu_admin()
             else:
-                usuario = logarUsuario.logar_usuario(email, senha)
+                usuario = funcaoUsuarios.logar_usuario(email, senha)
                 if usuario:
                     menu_usuario(usuario)
         elif opcao == '3':
@@ -59,6 +40,7 @@ def menu_login():
         else:
             print("Opção inválida!")
 
+"""--------------------------------------------------------------"""
 
 def menu_admin():
     while True:
@@ -68,29 +50,33 @@ def menu_admin():
         print("3. Consultar livro por título")
         print("4. Atualizar usuário")
         print("5. Visualizar dados de um usuário")
-        print("6. Ver todos os usuários")  # Nova opção adicionada
-        print("7. Sair")
+        print("6. Ver todos os usuários")
+        print("7. Deletar Usuario/interação/Livro")
+        print("8. Sair")
 
         opcao = input("Escolha uma opção: ")
 
         if opcao == '1':
-            cadastrarLivro.cadastrar_livro()
+            funcaoLivros.cadastrar_livro()
         elif opcao == '2':
-            consultarLivrosTodos.consultar_todos_livros()
+            funcaoLivros.consultar_todos_livros()
         elif opcao == '3':
-            consultarLivro.consultar_livro()
+            funcaoLivros.consultar_livro()
         elif opcao == '4':
-            atualizarUsuarioAdm.atualizar_usuario_admin()
+            funcaoADM.atualizar_usuario_admin()
         elif opcao == '5':
-            visualizarUsuario.visualizar_dados_usuario()
-        elif opcao == '6':  # Chama a nova função para visualizar todos os usuários
-            verTodosUsuarios.ver_todos_usuarios()
+            funcaoUsuarios.visualizar_dados_usuario()
+        elif opcao == '6':
+            funcaoUsuarios.ver_todos_usuarios()
         elif opcao == '7':
+            deletar.deletar_opcao()
+        elif opcao == '8':
             print("Saindo do menu admin...")
             break
         else:
             print("Opção inválida!")
 
+"""--------------------------------------------------------------"""
 
 def menu_usuario(usuario):
     while True:
@@ -100,39 +86,47 @@ def menu_usuario(usuario):
         print("3.  Seguir um usuário")
         print("4.  Ver seguidores")
         print("5.  Ver livros lidos e favoritos")
-        print("6.  interação")
+        print("6.  Registrar interação")
         print("7.  Mudar interação")
         print("8.  Ver melhores livros avaliados")
-        print("9.  Ver todos os livros disponiveis")
+        print("9.  Ver todos os livros disponíveis")
         print("10. Procurar por um livro específico")
-        print("11. Sair")
+        print("11. Excluir conta")
+        print("12. Sair")
 
         opcao = input("Escolha uma opção: ")
 
         if opcao == '1':
-            atualizarUsuario.atualizar_usuario(usuario)
+            funcaoUsuarios.atualizar_usuario(usuario)
         elif opcao == '2':
-            atualizarLivros.atualizar_livros_usuario(usuario)
+            funcaoUsuarios.atualizar_livros_usuario(usuario)
         elif opcao == '3':
-            SeguirUsuarioEVerSeguidores.seguir_usuario(usuario)
+            funcaoUsuarios.seguir_usuario(usuario)
         elif opcao == '4':
-            verSeguidoresUsuario.ver_seguidores_usuario(usuario)
+            funcaoUsuarios.ver_seguidores_usuario(usuario)
         elif opcao == '5':
-            verLivroU.ver_livros_usuario(usuario)
+            funcaoUsuarios.ver_livros_usuario(usuario)
         elif opcao == '6':
-            registrarInteracao.registrar_interacao(usuario)
+            funcaoInteracaos.registrar_interacao(usuario)
         elif opcao == '7':
-            atualizarInteracaoUsuario.atualizar_interacoes_usuario()
+            funcaoInteracaos.atualizar_interacoes_usuario()
         elif opcao == '8':
-            verMelhoresLivros.ver_melhores_livros_avaliados()
+            funcaoLivros.ver_melhores_livros_avaliados()
         elif opcao == '9':
-            verTodosLivros.ver_todos_livros()
+            funcaoLivros.ver_todos_livros()
         elif opcao == '10':
-            procurarLivro.procurar_livro()
+            funcaoLivros.procurar_livro()
         elif opcao == '11':
+            if deletar.excluir_conta_usuario(usuario):
+                break 
+        elif opcao == '12':
             print("Saindo do menu de usuário...")
             break
         else:
             print("Opção inválida!")
+
+"""--------------------------------------------------------------"""
+
+# 50 usuários, 30 livros e 80
 
 menu_login()
