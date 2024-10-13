@@ -156,13 +156,13 @@ def atualizar_livros_usuario(usuario):
         livro = colecao_livros.find_one({"título": livro_titulo})  #Busca o livro pelo titulo
         
         if livro:
-            if acao == "lidos":
+            if acao == "lidos".lower():
                 colecao_usuarios.update_one(
-                    {"título": usuario["_id"]},
+                    {"_id": usuario["_id"]},
                     {"$addToSet": {"livrosLidos": livro_titulo}}  #Adiciona o título do livro aos lidos
                 )
                 print("Livro adicionado aos lidos.")
-            elif acao == "favoritos":
+            elif acao == "favoritos".lower():
                 colecao_usuarios.update_one(
                     {"_id": usuario["_id"]},
                     {"$addToSet": {"livrosFavoritos": livro_titulo}}  #Adiciona o título do livro aos favoritos
